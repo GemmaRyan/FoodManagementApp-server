@@ -37,13 +37,13 @@ app.use(bodyParser.json());
       //the call for if its connected or no
 
     if (error) throw error;
-    console.log("✅ Supabase connected successfully");
+    console.log("Supabase connected successfully");
   } catch (err) {
-    console.error("❌ Supabase connection error:", err.message);
+    console.error("Supabase connection error:", err.message);
   }
 })();
 
-// === EXISTING FAVORITES ROUTES ===
+//existing favourites
 
 app.post("/api/favorites", async (req, res) => {
   try {
@@ -125,7 +125,7 @@ app.post("/api/detect-image", upload.single("image"), async (req, res) => {
     const form = new FormData();
     form.append("image", fs.createReadStream(req.file.path));
 
-    const pythonApi = "http://localhost:8000/detect"; // FastAPI service
+    const pythonApi = `${process.env.ML_SERVICE_URL || "http://localhost:8000"}/detect`;
     const response = await axios.post(pythonApi, form, {
       headers: form.getHeaders(),
       timeout: 20000,
