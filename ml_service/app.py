@@ -4,6 +4,15 @@ import requests
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
+
+GOOGLE_VISION_API_KEY = os.getenv("GOOGLE_VISION_API_KEY")
+if not GOOGLE_VISION_API_KEY:
+    raise RuntimeError("Missing GOOGLE_VISION_API_KEY in environment")
 
 app = FastAPI(title="FoodVision Service")
 

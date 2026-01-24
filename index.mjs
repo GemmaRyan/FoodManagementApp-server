@@ -1,6 +1,8 @@
 import "./loadEnvironment.mjs";
 import express from "express";
 import cors from "cors";
+import shoppingListRoutes from "./routes/shoppingList.mjs";
+import { spawn } from "child_process";
 
 import posts from "./routes/posts.mjs";
 import { supabase } from "./db/supabase.mjs";
@@ -15,6 +17,17 @@ const app = express();
 const PORT = process.env.PORT || 5050;
 
 
+//starts python production --should automatically use phone 
+// if (process.env.NODE_ENV !== "production") {
+//   const ml = spawn("py", ["-m", "uvicorn", "app:app", "--port", "8000", "--reload"], {
+//     cwd: "./ml_service",
+//     stdio: "inherit",
+//     shell: true
+//   });
+
+//   process.on("exit", () => ml.kill());
+// }
+
 //calls the main frointend  -- elliminating dev calls --look into later and change if needed
 app.use(cors({
   origin: ["http://localhost:4200"],
@@ -24,6 +37,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use("/api", shoppingListRoutes);
+
 
 // Test Supabase connection on startup
 (async () => {
@@ -157,3 +172,6 @@ app.use((err, _req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+//npm run dev
